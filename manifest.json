@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "background": {
+    "persistent": false,
+    "page": "background.html"
+  },
+  "name": "Help Scout Extension",
+  "description": "Support teh peeps... because they are worth it.",
+  "version": "1.0",
+
+  "permissions": [
+	"webNavigation",
+	"alarms"
+  ],
+  "browser_action": {
+    "default_icon": "helpscout.png"
+	}
+}
