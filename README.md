@@ -1,4 +1,4 @@
-helpscout-chrome-extension
+Helpscout Chrome Extension
 ==========================
 
 Chrome extension to notify you of new support emails.
