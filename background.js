@@ -1,8 +1,7 @@
 var helpScoutAPIURL = "https://api.helpscout.net/v1/mailboxes/<MAILBOX ID HERE>/conversations.json?status=active";
 var helpScoutDashboardURL = "https://secure.helpscout.net/dashboard/";
 var helpScoutAPIKey = "<API KEY HERE>";
-var pollIntervalMin = 1;  // 1 minute
-var pollIntervalMax = 60;  // 1 hour
+var pollInterval = 1;  // 1 minute
 var requestTimeout = 1000 * 2;
 var oldChromeVersion = !chrome.runtime;
 
@@ -53,20 +52,18 @@ function scheduleRequest() {
   var randomness = Math.random() * 2;
   var exponent = Math.pow(2, localStorage.requestFailureCount || 0);
   var multiplier = Math.max(randomness * exponent, 1);
-  var delay = Math.min(multiplier * pollIntervalMin, pollIntervalMax);
-  delay = Math.round(delay);
-  console.log('Scheduling for: ' + delay);
+  console.log('Scheduling for: ' + pollInterval);
 
   if (oldChromeVersion) {
     if (requestTimerId) {
       window.clearTimeout(requestTimerId);
     }
-    requestTimerId = window.setTimeout(onAlarm, delay*60*1000);
+    requestTimerId = window.setTimeout(onAlarm, pollInterval*60*1000);
   } else {
     console.log('Creating alarm');
     // Use a repeating alarm so that it fires again if there was a problem
     // setting the next alarm.
-    chrome.alarms.create('refresh', {periodInMinutes: delay});
+    chrome.alarms.create('refresh', {periodInMinutes: pollInterval});
   }
 }
 
