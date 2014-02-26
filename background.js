@@ -99,7 +99,7 @@ function getInboxCount(onSuccess, onError) {
 		console.log(inboxItems);
 		inboxItems.forEach(function(entry)
 		{
-			if (!entry["owner"])
+		if (!entry["owner"] && !entry["isDraft"])
 			{
 				count++;
 			}
