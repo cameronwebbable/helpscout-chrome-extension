@@ -45,11 +45,22 @@ function hideLoadingBar()
 	hideDiv("loading-bar");
 }
 
+function getMailBoxes()
+{
+    // var req = new XMLHttpRequest();
+    // req.open("GET", this.searchOnFlickr_, true);
+    // req.onload = this.showPhotos_.bind(this);
+    // req.send(null);
+}
+
 //Saves key to local storage and initializes request to get mailboxes
 function saveAPIKeyAndLoadMailboxes()
-{
+{	
+	var APIKey = document.getElementById("key-field").value;
+	setAPIKey(APIKey);
 	hideAPIPrompt();
 	showLoadingBar();
+	
 }
 
 document.addEventListener('DOMContentLoaded', function () {
