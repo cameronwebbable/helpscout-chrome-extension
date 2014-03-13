@@ -1,4 +1,5 @@
-var helpScoutAPIURL = "https://api.helpscout.net/v1/mailboxes/<MAILBOX ID HERE>/conversations.json?status=active";
+var helpScoutAPIURL = "https://api.helpscout.net/v1/mailboxes/";
+var conversationRelativeURL = "/conversations.json?status=active"
 var helpScoutDashboardURL = "https://secure.helpscout.net/dashboard/";
 var helpScoutAPIKey = "<API KEY HERE>";
 var pollInterval = 1;  // 1 minute
@@ -7,7 +8,8 @@ var oldChromeVersion = !chrome.runtime;
 
 function getMailboxAPI()
 {
-	return helpScoutAPIURL;
+	//Need to add API key here
+	return helpScoutAPIURL + helpScoutAPIKey + conversationRelativeURL;
 }
 
 function make_base_auth(user, password) {
