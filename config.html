@@ -8,9 +8,25 @@
 				min-width:357px;
 				overflow-hidden;
 			}
+			
+			.hidden
+			{
+				display: none;
+			}
+			
+			.shown
+			{
+				display: block;
+			}
 		</style>
+		<script src="config.js"></script>
 	</head>
 	<body>
+		<div id="api-key-block" class="shown">
+			<input type="text" placeholder="Enter Help Scout API Key" />
+			<a href="http://developer.helpscout.net/help-desk-api/">How do I get a HelpScout API Key?</a>
+		</div>
+		<div id="mailbox-list" class="hidden"></div>
 	</body>
 </html>
 	
