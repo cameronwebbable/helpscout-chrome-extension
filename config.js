@@ -13,16 +13,49 @@ function hasAPIKey()
 	return localStorage.hasOwnProperty('HSAPIKey');
 }
 
+function showDiv(elementID)
+{
+	var APIPrompt = document.getElementById(elementID);
+	APIPrompt.className = "shown";
+}
+
+function hideDiv(elementID)
+{
+	var APIPrompt = document.getElementById(elementID);
+	APIPrompt.className = "hidden";
+}
+
 function showAPIPrompt()
 {
-	var APIPrompt = document.getElementById("api-key-block");
-	
-	APIPrompt.className = "shown";
+	showDiv("api-key-block");
+}
+
+function hideAPIPrompt()
+{
+	hideDiv("api-key-block");
+}
+
+function showLoadingBar()
+{
+	showDiv("loading-bar");
+}
+
+function hideLoadingBar()
+{
+	hideDiv("loading-bar");
+}
+
+//Saves key to local storage and initializes request to get mailboxes
+function saveAPIKeyAndLoadMailboxes()
+{
+	hideAPIPrompt();
+	showLoadingBar();
 }
 
 document.addEventListener('DOMContentLoaded', function () {
 	if (!hasAPIKey())
 	{
 		showAPIPrompt();
+		document.getElementById('save-api-key').addEventListener('click', saveAPIKeyAndLoadMailboxes)
 	}
 });

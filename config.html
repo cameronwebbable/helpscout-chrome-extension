@@ -37,14 +37,23 @@
 			{
 				width:40px;
 			}
+			
+			#loading-bar
+			{
+				width: 10%;
+				height: 10%;
+				margin: 0 auto;
+			}
 		</style>
 		<script src="config.js"></script>
 	</head>
 	<body>
 		<div id="api-key-block" class="hidden">
-			<div><input type="text" placeholder="Enter Help Scout API Key"/><input type="button" value="Save" class="float-right"/></div>
+			<div><input type="text" placeholder="Enter Help Scout API Key"/><input id="save-api-key" type="button" value="Save" class="float-right"/></div>
 			<div><a href="http://developer.helpscout.net/help-desk-api/" target="_blank">How do I get a HelpScout API Key?</a></div>
 		</div>
+		<div><img id="loading-bar" class="hidden" src="http://www.baxcha.com/images/ajax-loader.gif"/>
+		
 		<div id="mailbox-list" class="hidden"></div>
 	</body>
 </html>
