@@ -8,9 +8,21 @@ function setAPIKey(apiKey)
 }
 
 //Helper function to see if we need to prompt user to set API Key
-function checkForAPIKey()
+function hasAPIKey()
 {
 	return localStorage.hasOwnProperty('HSAPIKey');
 }
 
-function show
+function showAPIPrompt()
+{
+	var APIPrompt = document.getElementById("api-key-block");
+	
+	APIPrompt.className = "shown";
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+	if (!hasAPIKey())
+	{
+		showAPIPrompt();
+	}
+});

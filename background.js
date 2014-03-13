@@ -165,7 +165,7 @@ if (oldChromeVersion) {
   chrome.alarms.onAlarm.addListener(onAlarm);
 }
 
-chrome.browserAction.onClicked.addListener(goToInbox);
+// chrome.browserAction.onClicked.addListener(goToInbox);
 if (chrome.runtime && chrome.runtime.onStartup) {
   chrome.runtime.onStartup.addListener(function() {
     console.log('Starting browser... updating icon.');
