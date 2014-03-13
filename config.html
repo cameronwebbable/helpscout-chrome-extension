@@ -19,22 +19,31 @@
 				display: block;
 			}
 			
-			input
+			.float-right
 			{
-				min-width:357px;
+				float: right;
+			}
+			input[type=text]
+			{
+				min-width:300px;
 			}
 			
 			a
 			{
 				font-size: 12px;
 			}
+			
+			input[type=button]
+			{
+				width:40px;
+			}
 		</style>
 		<script src="config.js"></script>
 	</head>
 	<body>
 		<div id="api-key-block" class="hidden">
-			<div><input type="text" placeholder="Enter Help Scout API Key" /></div>
-			<div><a href="http://developer.helpscout.net/help-desk-api/">How do I get a HelpScout API Key?</a></div>
+			<div><input type="text" placeholder="Enter Help Scout API Key"/><input type="button" value="Save" class="float-right"/></div>
+			<div><a href="http://developer.helpscout.net/help-desk-api/" target="_blank">How do I get a HelpScout API Key?</a></div>
 		</div>
 		<div id="mailbox-list" class="hidden"></div>
 	</body>
