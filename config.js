@@ -60,10 +60,10 @@ function saveAPIKeyAndLoadMailboxes()
 	setAPIKey(APIKey);
 	hideAPIPrompt();
 	showLoadingBar();
-	
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+	delete localStorage.HSAPIKey;
 	if (!hasAPIKey())
 	{
 		showAPIPrompt();
