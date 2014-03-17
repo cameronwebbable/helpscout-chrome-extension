@@ -47,10 +47,38 @@ function hideLoadingBar()
 
 function getMailBoxes()
 {
-    // var req = new XMLHttpRequest();
-    // req.open("GET", this.searchOnFlickr_, true);
-    // req.onload = this.showPhotos_.bind(this);
-    // req.send(null);
+    var xhr = new XMLHttpRequest();
+    var abortTimerId = window.setTimeout(function() {
+      xhr.abort();  // synchronously calls onreadystatechange
+    }, requestTimeout);
+
+    function handleSuccess()
+	{
+		console.log("success");
+    }
+
+    function handleError() {
+		console.log("some error");
+    }
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState != 4)
+          return;
+	  
+  		var data = JSON.parse(xhr.responseText);
+          var inboxItems = data["items"];
+  		var count = 0;
+  		console.log(inboxItems);
+  		onSuccess(count);
+      };
+
+      xhr.onerror = function(error) {
+        handleError();
+      };
+
+      xhr.open("GET", getMailboxAPI(), true);
+      xhr.setRequestHeader("Authorization", make_base_auth(helpScoutAPIKey, "X"));
+      xhr.send(null);
 }
 
 //Saves key to local storage and initializes request to get mailboxes
