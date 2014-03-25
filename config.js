@@ -45,40 +45,48 @@ function hideLoadingBar()
 	hideDiv("loading-bar");
 }
 
-function getMailBoxes()
+function getMailBoxes(onSuccess, onFailure)
 {
     var xhr = new XMLHttpRequest();
     var abortTimerId = window.setTimeout(function() {
       xhr.abort();  // synchronously calls onreadystatechange
     }, requestTimeout);
 
-    function handleSuccess()
+    function handleSuccess(e)
 	{
 		console.log("success");
+		if (onSuccess)
+		{
+			onSuccess(e);
+		}
     }
 
-    function handleError() {
+    function handleError(e) {
 		console.log("some error");
+		if (onError)
+		{
+			onError(e);
+		}
     }
 
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState != 4)
-          return;
-	  
-  		var data = JSON.parse(xhr.responseText);
-          var inboxItems = data["items"];
-  		var count = 0;
-  		console.log(inboxItems);
-  		onSuccess(count);
-      };
+	xhr.onreadystatechange = function() {
+	if (xhr.readyState != 4)
+	  return;
 
-      xhr.onerror = function(error) {
-        handleError();
-      };
+	var data = JSON.parse(xhr.responseText);
+	  var inboxItems = data["items"];
+	var count = 0;
+	console.log(inboxItems);
+	onSuccess(count);
+	};
 
-      xhr.open("GET", getMailboxAPI(), true);
-      xhr.setRequestHeader("Authorization", make_base_auth(helpScoutAPIKey, "X"));
-      xhr.send(null);
+	xhr.onerror = function(error) {
+	handleError();
+	};
+
+	xhr.open("GET", getMailboxListAPI(), true);
+	xhr.setRequestHeader("Authorization", make_base_auth(storedHelpScoutAPIKey(), "X"));
+	xhr.send(null);
 }
 
 //Saves key to local storage and initializes request to get mailboxes
@@ -88,6 +96,12 @@ function saveAPIKeyAndLoadMailboxes()
 	setAPIKey(APIKey);
 	hideAPIPrompt();
 	showLoadingBar();
+	getMailBoxes(function(mailBoxes) {
+      //mailbox succeeded
+	  console.log(mailboxes);
+    }, function(mailBoxes) {
+  	  console.log("crap... mail boxes failed");
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function () {

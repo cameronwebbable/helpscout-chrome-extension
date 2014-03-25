@@ -10,7 +10,9 @@
 
   "permissions": [
 	"webNavigation",
-	"alarms"
+	"alarms",
+	"https://api.helpscout.net/*",
+	"https://secure.helpscout.net/dashboard/*"
   ],
   "browser_action": {
     "default_icon": "helpscout.png",

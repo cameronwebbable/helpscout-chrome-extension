@@ -104,7 +104,7 @@ function getInboxCount(onSuccess, onError) {
     };
 
     xhr.open("GET", getMailboxAPI(), true);
-    xhr.setRequestHeader("Authorization", make_base_auth(helpScoutAPIKey, "X"));
+    xhr.setRequestHeader("Authorization", make_base_auth(storedHelpScoutAPIKey(), "X"));
     xhr.send(null);
 }
 
@@ -147,29 +147,34 @@ function goToInbox() {
     chrome.tabs.create({url: helpScoutDashboardURL});
   });
 }
-if (oldChromeVersion) {
-  updateIcon();
-  onInit();
-} else {
-  chrome.runtime.onInstalled.addListener(onInit);
-  chrome.alarms.onAlarm.addListener(onAlarm);
-}
 
-// chrome.browserAction.onClicked.addListener(goToInbox);
-if (chrome.runtime && chrome.runtime.onStartup) {
-  chrome.runtime.onStartup.addListener(function() {
-    console.log('Starting browser... updating icon.');
-    startRequest({scheduleRequest:false, showLoadingAnimation:false});
-    updateIcon();
-  });
-} else {
-  // This hack is needed because Chrome 22 does not persist browserAction icon
-  // state, and also doesn't expose onStartup. So the icon always starts out in
-  // wrong state. We don't actually use onStartup except as a clue that we're
-  // in a version of Chrome that has this problem.
-  chrome.windows.onCreated.addListener(function() {
-    console.log('Window created... updating icon.');
-    startRequest({scheduleRequest:false, showLoadingAnimation:false});
-    updateIcon();
-  });
+function loadMailboxChecker()
+{	
+	if (oldChromeVersion) {
+	  updateIcon();
+	  onInit();
+	} else {
+	  chrome.runtime.onInstalled.addListener(onInit);
+	  chrome.alarms.onAlarm.addListener(onAlarm);
+	}
+
+	// chrome.browserAction.onClicked.addListener(goToInbox);
+	if (chrome.runtime && chrome.runtime.onStartup) {
+	  chrome.runtime.onStartup.addListener(function() {
+	    console.log('Starting browser... updating icon.');
+	    startRequest({scheduleRequest:false, showLoadingAnimation:false});
+	    updateIcon();
+	  });
+	} else {
+	  // This hack is needed because Chrome 22 does not persist browserAction icon
+	  // state, and also doesn't expose onStartup. So the icon always starts out in
+	  // wrong state. We don't actually use onStartup except as a clue that we're
+	  // in a version of Chrome that has this problem.
+	  chrome.windows.onCreated.addListener(function() {
+	    console.log('Window created... updating icon.');
+	    startRequest({scheduleRequest:false, showLoadingAnimation:false});
+	    updateIcon();
+	  });
+	}
+
 }
