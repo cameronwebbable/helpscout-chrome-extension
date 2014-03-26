@@ -1,5 +1,7 @@
 //Defining API Key, will get around to setting/getting later.
 var APIKey = localStorage.HSAPIKey;
+var requestTimeout = 1000 * 2;
+
 
 //Sets API Key. CRAZY.
 function setAPIKey(apiKey)
@@ -45,45 +47,56 @@ function hideLoadingBar()
 	hideDiv("loading-bar");
 }
 
+function showMailboxes(mailboxes)
+{
+	var APIPrompt = document.getElementById(elementID);
+	APIPrompt.className = "mailbox-list table";
+	
+	/*    <div class="table-row">
+      <div class="table-cell">1</div>
+      <div class="table-cell">2</div>
+   </div> */
+	
+	//Populate teh mailbox list
+	mailboxes.forEach(function(entry)
+	{
+		
+	});
+}
+
+function hideMailboxes()
+{
+	hideDiv("mailbox-list");
+}
+
 function getMailBoxes(onSuccess, onFailure)
 {
+	console.log("called");
     var xhr = new XMLHttpRequest();
     var abortTimerId = window.setTimeout(function() {
       xhr.abort();  // synchronously calls onreadystatechange
     }, requestTimeout);
 
-    function handleSuccess(e)
-	{
-		console.log("success");
-		if (onSuccess)
-		{
-			onSuccess(e);
-		}
-    }
-
-    function handleError(e) {
-		console.log("some error");
-		if (onError)
-		{
-			onError(e);
-		}
-    }
-
 	xhr.onreadystatechange = function() {
+		console.log("response")
 	if (xhr.readyState != 4)
 	  return;
 
 	var data = JSON.parse(xhr.responseText);
-	  var inboxItems = data["items"];
-	var count = 0;
-	console.log(inboxItems);
-	onSuccess(count);
+		console.log(data);
+		if (onSuccess)
+		{
+			onSuccess(data);
+		}
 	};
 
 	xhr.onerror = function(error) {
-	handleError();
+		if (onFailure)
+		{
+			onFailure(error);
+		}
 	};
-
+	console.log(getMailboxListAPI());
 	xhr.open("GET", getMailboxListAPI(), true);
 	xhr.setRequestHeader("Authorization", make_base_auth(storedHelpScoutAPIKey(), "X"));
 	xhr.send(null);
@@ -96,12 +109,15 @@ function saveAPIKeyAndLoadMailboxes()
 	setAPIKey(APIKey);
 	hideAPIPrompt();
 	showLoadingBar();
-	getMailBoxes(function(mailBoxes) {
-      //mailbox succeeded
-	  console.log(mailboxes);
-    }, function(mailBoxes) {
-  	  console.log("crap... mail boxes failed");
-    });
+	getMailBoxes(function(mailboxes)
+	{
+		hideLoadingBar();
+		showMailboxes(mailboxes);
+	}, 
+	function(error) 
+	{
+		console.log("failed because " + error);
+	});
 }
 
 document.addEventListener('DOMContentLoaded', function () {

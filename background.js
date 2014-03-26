@@ -2,11 +2,6 @@ var pollInterval = 1;  // 1 minute
 var requestTimeout = 1000 * 2;
 var oldChromeVersion = !chrome.runtime;
 
-function make_base_auth(user, password) {
-  var tok = user + ':' + password;
-  var hash = btoa(tok);
-  return "Basic " + hash;
-}
 
 function onInit() {
   console.log('onInit');
