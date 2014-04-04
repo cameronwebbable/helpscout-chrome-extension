@@ -49,8 +49,8 @@ function hideLoadingBar()
 
 function showMailboxes(mailboxes)
 {
-	var APIPrompt = document.getElementById(elementID);
-	APIPrompt.className = "mailbox-list table";
+	var mailboxesDiv = document.getElementById(elementID);
+	mailboxesDiv.className = "mailbox-list table";
 	
 	/*    <div class="table-row">
       <div class="table-cell">1</div>
@@ -58,9 +58,9 @@ function showMailboxes(mailboxes)
    </div> */
 	
 	//Populate teh mailbox list
-	mailboxes.forEach(function(entry)
+	mailboxes["items"].forEach(function(entry)
 	{
-		
+		mailboxesDiv.append();
 	});
 }
 
