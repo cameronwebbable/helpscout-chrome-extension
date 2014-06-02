@@ -49,8 +49,8 @@ function hideLoadingBar()
 
 function showMailboxes(mailboxes)
 {
-	var mailboxesDiv = document.getElementById(elementID);
-	mailboxesDiv.className = "mailbox-list table";
+	var mailboxesDiv = $("#mailbox-list");
+	mailboxesDiv.attr("class", "mailbox-list table");
 	
 	/*    <div class="table-row">
       <div class="table-cell">1</div>
@@ -60,8 +60,14 @@ function showMailboxes(mailboxes)
 	//Populate teh mailbox list
 	mailboxes["items"].forEach(function(entry)
 	{
-		mailboxesDiv.append();
-	});
+		console.log(entry);
+		mailboxesDiv.append("<div class=\"table-row\">");
+		mailboxesDiv.append("<div value=" + entry.id + " class=\"table-cell\"><input type=\"checkbox\" id=\"" + entry.name + "\" />" + entry.name + "</div>");
+		mailboxesDiv.append("</div>");
+	});	
+	
+	mailboxesDiv.append('<input id="save-mailboxes" type="button" value="Save" class="float-right"/>');
+	document.getElementById('save-mailboxes').addEventListener('click', saveAPIKeyAndLoadMailboxes);
 }
 
 function hideMailboxes()
@@ -109,8 +115,27 @@ function saveAPIKeyAndLoadMailboxes()
 	setAPIKey(APIKey);
 	hideAPIPrompt();
 	showLoadingBar();
+	
 	getMailBoxes(function(mailboxes)
+	{		
+		hideLoadingBar();
+		showMailboxes(mailboxes);
+	}, 
+	function(error) 
 	{
+		console.log("failed because " + error);
+	});
+}
+
+function saveMailboxes()
+{	
+	var APIKey = document.getElementById("save-mailboxes").value;
+	setAPIKey(APIKey);
+	hideAPIPrompt();
+	showLoadingBar();
+	
+	getMailBoxes(function(mailboxes)
+	{		
 		hideLoadingBar();
 		showMailboxes(mailboxes);
 	}, 
@@ -121,7 +146,7 @@ function saveAPIKeyAndLoadMailboxes()
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-	delete localStorage.HSAPIKey;
+	// delete localStorage.HSAPIKey;
 	if (!hasAPIKey())
 	{
 		showAPIPrompt();
