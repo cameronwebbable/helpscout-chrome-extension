@@ -1,5 +1,5 @@
-//Defining API Key, will get around to setting/getting later.
 var APIKey = localStorage.HSAPIKey;
+var savedMailBoxes = localStorage.HSMailBoxes;
 var requestTimeout = 1000 * 2;
 
 
@@ -13,6 +13,18 @@ function setAPIKey(apiKey)
 function hasAPIKey()
 {
 	return localStorage.hasOwnProperty('HSAPIKey');
+}
+
+function setMailboxes(boxes)
+{
+	console.log(boxes)
+	localStorage.HSMailBoxes = boxes.toString();
+}
+
+//Helper function to see if we need to prompt user to set API Key
+function hasMailboxes()
+{
+	return localStorage.hasOwnProperty('HSMailBoxes');
 }
 
 function showDiv(elementID)
@@ -51,23 +63,24 @@ function showMailboxes(mailboxes)
 {
 	var mailboxesDiv = $("#mailbox-list");
 	mailboxesDiv.attr("class", "mailbox-list table");
-	
+	console.log(mailboxes);
 	/*    <div class="table-row">
       <div class="table-cell">1</div>
       <div class="table-cell">2</div>
    </div> */
 	
 	//Populate teh mailbox list
-	mailboxes["items"].forEach(function(entry)
+	console.log(mailboxes);
+	mailboxes.forEach(function(entry)
 	{
 		console.log(entry);
 		mailboxesDiv.append("<div class=\"table-row\">");
-		mailboxesDiv.append("<div value=" + entry.id + " class=\"table-cell\"><input type=\"checkbox\" id=\"" + entry.name + "\" />" + entry.name + "</div>");
+		mailboxesDiv.append("<divclass=\"table-cell\"><input type=\"checkbox\" value=" + entry.id + " id=\"" + entry.name + "\" />" + entry.name + "</div>");
 		mailboxesDiv.append("</div>");
 	});	
 	
-	mailboxesDiv.append('<input id="save-mailboxes" type="button" value="Save" class="float-right"/>');
-	document.getElementById('save-mailboxes').addEventListener('click', saveAPIKeyAndLoadMailboxes);
+	mailboxesDiv.append('<div class="table-row"><input id="save-mailboxes" type="button" value="Save"/></div>');
+	document.getElementById('save-mailboxes').addEventListener('click', saveMailboxes);
 }
 
 function hideMailboxes()
@@ -119,7 +132,8 @@ function saveAPIKeyAndLoadMailboxes()
 	getMailBoxes(function(mailboxes)
 	{		
 		hideLoadingBar();
-		showMailboxes(mailboxes);
+		setMailboxes(mailboxes["items"]);
+		showMailboxes(mailboxes["items"]);
 	}, 
 	function(error) 
 	{
@@ -129,20 +143,9 @@ function saveAPIKeyAndLoadMailboxes()
 
 function saveMailboxes()
 {	
-	var APIKey = document.getElementById("save-mailboxes").value;
-	setAPIKey(APIKey);
-	hideAPIPrompt();
-	showLoadingBar();
-	
-	getMailBoxes(function(mailboxes)
-	{		
-		hideLoadingBar();
-		showMailboxes(mailboxes);
-	}, 
-	function(error) 
-	{
-		console.log("failed because " + error);
-	});
+	var checkedItems = $("input[type=checkbox]:checked");
+	setMailboxes(checkedItems);
+	//Show "saved!" for a few seconds
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -151,5 +154,10 @@ document.addEventListener('DOMContentLoaded', function () {
 	{
 		showAPIPrompt();
 		document.getElementById('save-api-key').addEventListener('click', saveAPIKeyAndLoadMailboxes)
+	}
+	
+	else
+	{
+		showMailboxes(savedMailBoxes);
 	}
 });
